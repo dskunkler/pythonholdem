@@ -1,9 +1,26 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Oct 30 13:47:39 2018
+
+@author: dskun
+"""
+
 """
 Created on Thu Oct 25 11:37:40 2018
 
 @author: Daniel Kujnkler
 """
 from random import shuffle
+
+class Player(object):
+    def __init__(self, buyin):
+        self.__chips = buyin
+        self.__hand = []        
+    def getHand(self, i):
+        self.__hand.append(i)
+        
+    def showHand(self):
+        print(self.__hand)
 
 
 class Card(object):
