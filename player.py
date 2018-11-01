@@ -1,29 +1,25 @@
-
+#Player object requires amount of buyin and the players name in constructor 
 class Player(object):
     def __init__(self, buyin, name):
-        self.__chips = buyin
-        self.__hand = []
+        self.chips = buyin
+        self.hand = []
         self.name = name
-        self.ingame = True
         
     def getHand(self, i):
-        self.__hand.append(i)
+        self.hand.append(i)
         
     def showHand(self):
         #returns string of hand
-        return self.__hand
+        return self.hand
 
     def placeBet(self):
         print("PLAYER", self.name, "CHIPS:", self.__chips)
-        while (True):
-            bet = eval(input("How much would you like to bet: "))
-            if (bet <= self.__chips):
-                break
-        self.__chips -= bet
+        bet = eval(input("How much would you like to bet: "))
+        self.chips -= bet
         return bet
 
     def getName(self):
-        return self.__name
+        return self.name    #Redundant too be deleted
         
     def __repr__(self):
-        return self.name + ": " + str(self.__chips)
+        return self.name + ": " + str(self.chips)
