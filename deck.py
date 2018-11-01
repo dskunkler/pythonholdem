@@ -12,17 +12,6 @@ Created on Thu Oct 25 11:37:40 2018
 """
 from random import shuffle
 
-class Player(object):
-    def __init__(self, buyin):
-        self.__chips = buyin
-        self.__hand = []        
-    def getHand(self, i):
-        self.__hand.append(i)
-        
-    def showHand(self):
-        print(self.__hand)
-
-
 class Card(object):
     def __init__(self, num = 1, suit = 'spade'):
         self.__num = num
@@ -36,12 +25,8 @@ class Card(object):
         elif self.__num == 13:
             self.__num = 'K'
     
-    
-    
     def getCard(self):
         return '{} {}'.format(self.__num, self.__suit)
-
-
 
 class Deck(Card):
     def __init__(self, deck = []):
