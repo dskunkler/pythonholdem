@@ -4,6 +4,7 @@ class Player(object):
         self.__chips = buyin
         self.__hand = []
         self.name = name
+        self.ingame = True
         
     def getHand(self, i):
         self.__hand.append(i)
@@ -14,7 +15,10 @@ class Player(object):
 
     def placeBet(self):
         print("PLAYER", self.name, "CHIPS:", self.__chips)
-        bet = eval(input("How much would you like to bet: "))
+        while (True):
+            bet = eval(input("How much would you like to bet: "))
+            if (bet <= self.__chips):
+                break
         self.__chips -= bet
         return bet
 
@@ -23,4 +27,3 @@ class Player(object):
         
     def __repr__(self):
         return self.name + ": " + str(self.__chips)
-
