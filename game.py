@@ -10,31 +10,45 @@ class Game:
         for i in range(0, len(names)):
             self.players.append(player.Player(200, names[i]))
 
+    def bettingPhase(self):
+        print("\n", "POT IS: ", self.pot)
+        for x in range( len(self.players)):
+            self.pot += self.players[x].placeBet()
+            
+
     def play(self):
         self.deck.shuffleDeck()
         #deal
         for x in self.players:
             for i in range(2):
-                x.getHand(self.deck.dealOne())        
+                x.getHand(self.deck.dealOne())
+
+        #pre-flop hands
+        self.print_game()
+                
         #pre-flop betting round
+        self.bettingPhase()
 
         #flop
         self.community_deal()
         self.print_game()
 
         #betting round 2
+        self.bettingPhase()
 
         #the turn
         self.community_deal()
         self.print_game()
         
         #betting round 3
+        self.bettingPhase()
 
         #the river
         self.community_deal()
         self.print_game()
         
         #betting round 4 (final)
+        self.bettingPhase()
         
     def community_deal(self):
         if (len(self.comm) == 0):
@@ -56,7 +70,7 @@ class Game:
             print(x.showHand())
             
             
-names = ["A","B","C","D","E","F"]
+names = ["A","B","C"]
 
 g = Game(names, 200)
 

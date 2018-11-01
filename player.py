@@ -11,6 +11,16 @@ class Player(object):
     def showHand(self):
         #returns string of hand
         return self.__hand
+
+    def placeBet(self):
+        print("PLAYER", self.name, "CHIPS:", self.__chips)
+        bet = eval(input("How much would you like to bet: "))
+        self.__chips -= bet
+        return bet
+
+    def getName(self):
+        return self.__name
         
     def __repr__(self):
         return self.name + ": " + str(self.__chips)
+
