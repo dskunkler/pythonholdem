@@ -14,10 +14,13 @@ class Player(object):
 
     def placeBet(self):
         print("PLAYER", self.name, "CHIPS:", self.__chips)
-        bet = eval(input("How much would you like to bet: "))
-        self.chips -= bet
+        while (True):
+            bet = eval(input("How much would you like to bet: "))
+            if (bet <= self.__chips):
+                break
+        self.__chips -= bet
         return bet
-
+        
     def getName(self):
         return self.name    #Redundant too be deleted
         
