@@ -4,6 +4,7 @@ class Player(object):
         self.chips = buyin
         self.hand = []
         self.name = name
+        self.inHand = True
         
     def getHand(self, i):
         self.hand.append(i)
@@ -12,17 +13,5 @@ class Player(object):
         #returns string of hand
         return self.hand
 
-    def placeBet(self):
-        print("PLAYER", self.name, "CHIPS:", self.__chips)
-        while (True):
-            bet = eval(input("How much would you like to bet: "))
-            if (bet <= self.__chips):
-                break
-        self.__chips -= bet
-        return bet
-        
-    def getName(self):
-        return self.name    #Redundant too be deleted
-        
     def __repr__(self):
         return self.name + ": " + str(self.chips)

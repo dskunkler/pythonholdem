@@ -1,16 +1,14 @@
 import deck, player
 
 class Hand:
+    #constructor requires list of current players
     def __init__(self,players):
-        self.players = players
-        self.comm = [] #community cards
-        self.pot = 0
+        self.players = players #list of players
         self.deck = deck.Deck()
+        self.comm = [] #community cards
 
-    def bettingPhase(self):
-        print("\n", "POT IS: ", self.pot)
-        for x in range(len(self.players)):
-            self.pot += self.players[x].placeBet()
+        self.pot = 0
+        self.currBet = 0
 
     def play(self):
         self.deck.shuffleDeck()
@@ -35,6 +33,52 @@ class Hand:
             self.bettingPhase()
             i += 1
         
+    def bettingPhase(self):
+        print("\nPOT IS: ", self.pot)
+
+        for player in self.players:
+            while (True):
+                print("PLAYER", player.name, "CHIPS:", player.chips)
+
+                #still need to add logic on when you can do certain things
+                choice = input("check, bet, call, raise, fold:\n")
+                if choice == "check":
+                    break
+                elif choice == "bet" or choice == "raise":
+                    self.placeBet(player)
+                    break
+                elif choice == "call":
+                    self.callBet(player)
+                    break
+                elif choice == "fold":
+                    self.fold(player)
+                    break
+                    
+    def placeBet(self, player):
+        bet = int(input("How much would you like to bet: "))
+        if (bet <= player.chips):
+            print("Placed bet of " + str(bet))
+            player.chips -= bet
+            self.pot += bet
+            self.currBet = bet
+            return True
+        else:
+            print("Not enough chips")
+            return False
+
+    def callBet(self, player):
+        if (self.currBet <= player.chips):
+            print("Called a bet of " + str(self.currBet))
+            player.chips -= self.currBet
+            self.pot += self.currBet
+            return True
+        else:
+            return False
+        
+    def fold(self, player):
+        player.inHand = False
+        return True
+            
     def communityDeal(self):
         if (len(self.comm) == 0):
             for i in range(3):
@@ -45,29 +89,14 @@ class Hand:
             raise RuntimeError("Community cards overflow")
 
     #ph-will be using this to determine whether to cont game
-    
+    #with >= 2 players in game basically
     def continueGame(self):
         return True
         
     #debugging tool
     def printGame(self):
         print("\nCOMMUNITY CARDS:\n" + "; ".join(self.comm))
-        print("PLAYERS")
+        print("\nPLAYERS:")
         for x in self.players:
             print(x)
             print(x.showHand())
-            
-            
-names = ["A","B","C"]
-
-#this stuff will go into a new "Game" class for the overall game
-#but can stay here for current testing
-#create players
-players = []
-for i in range(0, len(names)):
-    players.append(player.Player(200, names[i]))
-
-h = Hand(players)
-
-h.play()
-print(h.players)
