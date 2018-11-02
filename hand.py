@@ -44,7 +44,7 @@ class Hand:
                 choice = input("check, bet, call, raise, fold:\n")
                 if choice == "check":
                     break
-                elif choice == "bet":
+                elif choice == "bet" or choice == "raise":
                     self.placeBet(player)
                     break
                 elif choice == "call":
