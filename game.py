@@ -1,6 +1,7 @@
-import hand
+import hand, player
 
 class Game:
+    #contructor requires list of names and buyin amount
     def __init__(self, names, buyin):
         self.players = []
         #create players
@@ -8,7 +9,8 @@ class Game:
             self.players.append(player.Player(buyin, names[i]))
 
     def play(self):
-        h = Hand(players)
+        h = hand.Hand(self.players)
+        h.play()
 
 
 names = ["A","B","C"]
