@@ -10,10 +10,16 @@ class Hand:
         self.pot = 0
         self.currBet = 0
 
+    def clear(self): #resetting
+        self.deck = deck.Deck()
+        self.comm = []
+        
+        self.pot = 0
+        self.currBet = 0
+        
     def play(self):
         self.deck.shuffleDeck()
 
-        ###ph-might want to stick in a new method, might not be necessary though
         #deal to players
         for x in self.players:
             for i in range(2):
@@ -41,6 +47,7 @@ class Hand:
                 print("PLAYER", player.name, "CHIPS:", player.chips)
 
                 #still need to add logic on when you can do certain things
+                #probably need to have a separate raise function actually now im thinking bout it
                 choice = input("check, bet, call, raise, fold:\n")
                 if choice == "check":
                     break
@@ -53,17 +60,23 @@ class Hand:
                 elif choice == "fold":
                     self.fold(player)
                     break
+        
+        self.currBet = 0  #reset currBet for the next round
                     
     def placeBet(self, player):
         bet = int(input("How much would you like to bet: "))
-        if (bet <= player.chips):
+        if (bet <= player.chips and bet > self.currBet):
             print("Placed bet of " + str(bet))
             player.chips -= bet
             self.pot += bet
             self.currBet = bet
             return True
         else:
-            print("Not enough chips")
+            #both errors possible simultaneously or individually
+            if (bet > self.currBet):
+                print("Must bet more than current bet!")
+            if (bet > player.chips):
+                print("Not enough chips!")
             return False
 
     def callBet(self, player):
@@ -73,6 +86,7 @@ class Hand:
             self.pot += self.currBet
             return True
         else:
+            print("Not enough chips")
             return False
         
     def fold(self, player):
