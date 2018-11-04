@@ -145,7 +145,8 @@ class Hand:
     
     #debugging tool
     def print_game(self):
-        print("\nCOMMUNITY CARDS:\n" + "; ".join(self.comm))
+        print("\nCOMMUNITY CARDS:")
+        print(self.comm)
         print("\nPLAYERS:")
         for x in self.players:
             if (x.in_hand == True):

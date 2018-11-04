@@ -1,43 +1,43 @@
 from random import shuffle
 
 class Card:
-    def __init__(self, num = 1, suit = 'spade'):
-        self.__num = num
-        self.__suit = suit
-        if self.__num == 1:
-            self.__num = 'A'
-        elif self.__num == 11:
-            self.__num = 'J'
-        elif self.__num == 12:
-            self.__num = 'Q'
-        elif self.__num == 13:
-            self.__num = 'K'
+    ranks = ['2','3','4','5','6','7','8','9','10','Jack','Queen','King','Ace']
+    suits = ['Spades','Hearts','Clubs','Diamonds']
     
-    def get_card(self):
-        return '{} {}'.format(self.__num, self.__suit)
+    def __init__(self, rank, suit):
+        self.rank = rank
+        self.suit = suit
+    
+    def __repr__(self):
+        return '{} {}'.format(Card.ranks[self.rank], Card.suits[self.suit])
 
-class Deck(Card):
-    def __init__(self, deck = []):
-        Card.__init__(self,num =1, suit = 'spade')
-        self.__deck = deck
+class Deck:
+    def __init__(self):
+        self.deck = []
         self.fill()
     
     def fill(self):
-        suits = ['Spade','Heart','Club','Diamond']
-        for i in range(1,14):
-            for j in suits:
+        for i in range(0,13):
+            for j in range(0,4):
                 c1 = Card(i,j)
-                self.__deck.append(c1)
+                self.deck.append(c1)
                 
     def deal_one(self):
-        card = self.__deck.pop()
-        return card.get_card()
+        card = self.deck.pop()
+        return card
     
     def show_deck(self):
-        cards = []
-        for i in self.__deck:
-            cards.append(i.get_card())
-        return cards
-    
+        deck_str = ''
+        for i in range(0, 49, 4):
+            print('{} {} {} {}'.format(self.deck[i], self.deck[i+1],
+                                         self.deck[i+2], self.deck[i+3]))
+        
     def shuffle_deck(self):
-        shuffle(self.__deck)
+        shuffle(self.deck)
+
+    def __repr__(self):
+        deck_str = ''
+        for i in range(0, 49, 4):
+            deck_str += '{} {} {} {}\n'.format(self.deck[i], self.deck[i+1],
+                                               self.deck[i+2], self.deck[i+3])
+        return deck_str
