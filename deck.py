@@ -1,18 +1,6 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Oct 30 13:47:39 2018
-
-@author: dskun
-"""
-
-"""
-Created on Thu Oct 25 11:37:40 2018
-
-@author: Daniel Kujnkler
-"""
 from random import shuffle
 
-class Card(object):
+class Card:
     def __init__(self, num = 1, suit = 'spade'):
         self.__num = num
         self.__suit = suit
@@ -25,7 +13,7 @@ class Card(object):
         elif self.__num == 13:
             self.__num = 'K'
     
-    def getCard(self):
+    def get_card(self):
         return '{} {}'.format(self.__num, self.__suit)
 
 class Deck(Card):
@@ -41,15 +29,15 @@ class Deck(Card):
                 c1 = Card(i,j)
                 self.__deck.append(c1)
                 
-    def dealOne(self):
+    def deal_one(self):
         card = self.__deck.pop()
-        return card.getCard()
+        return card.get_card()
     
-    def showDeck(self):
+    def show_deck(self):
         cards = []
         for i in self.__deck:
-            cards.append(i.getCard())
+            cards.append(i.get_card())
         return cards
     
-    def shuffleDeck(self):
+    def shuffle_deck(self):
         shuffle(self.__deck)

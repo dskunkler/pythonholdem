@@ -1,15 +1,15 @@
 #Player object requires amount of buyin and the players name in constructor 
-class Player(object):
+class Player:
     def __init__(self, buyin, name):
         self.chips = buyin
         self.hand = []
         self.name = name
-        self.inHand = True
+        self.in_hand = True
         
-    def getHand(self, i):
+    def get_hand(self, i):
         self.hand.append(i)
         
-    def showHand(self):
+    def show_hand(self):
         #returns string of hand
         return self.hand
 

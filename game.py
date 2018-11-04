@@ -3,18 +3,18 @@ import hand, player
 
 class Game:
     #contructor requires list of names and buyin amount
-    def __init__(self, names, buyin):
+    def __init__(self, names, buy_in):
         self.players = []
-        self.handNumber = 1
+        self.hand_number = 1
         #create players
         for i in range(0, len(names)):
-            self.players.append(player.Player(buyin, names[i]))
+            self.players.append(player.Player(buy_in, names[i]))
             
     def play(self):
         h = hand.Hand(self.players)
         while (True):
-            print("\n----------\nPlaying hand: " + str(self.handNumber))
-            self.handNumber += 1
+            print("\n----------\nPlaying hand: " + str(self.hand_number))
+            self.hand_number += 1
             h.play()
             h.clear()
             #rotates betting and blind order

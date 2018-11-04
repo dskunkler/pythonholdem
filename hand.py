@@ -1,116 +1,117 @@
-import deck, player
+import deck
+import player
 
 class Hand:
-    #constructor requires list of current players
+    # Constructor requires list of current players
     def __init__(self,players):
-        self.players = players            #list of players
-        self.currPlayers = len(players)   #players in current hand
+        self.players = players             # List of players
+        self.curr_players = len(players)   # Players in current hand
         self.deck = deck.Deck()   
-        self.comm = []                    #community cards
+        self.comm = []                     # Community cards
 
         self.blind = 50 #holds blinds
 
         self.pot = 0
-        self.currBet = 0
+        self.curr_bet = 0
 
     def clear(self): #reset hand
-        self.currPlayers = len(self.players)
+        self.curr_players = len(self.players)
         self.deck = deck.Deck()
         self.comm = []
 
         self.pot = 0
-        self.currBet = 0
+        self.curr_bet = 0
 
         for player in self.players:
-            player.inHand = True
+            player.in_hand = True
             player.hand = []
         
     def play(self):
-        self.deck.shuffleDeck()
+        self.deck.shuffle_deck()
 
-        self.blindPhase() #Posts blinds             
+        self.blind_phase() #Posts blinds             
 
         #deal to players
-        for x in self.players:
+        for player in self.players:
             for i in range(2):
-                x.getHand(self.deck.dealOne())
+                player.get_hand(self.deck.deal_one())
 
         #pre-flop hands
-        self.printGame()
+        self.print_game()
         
         #pre-flop betting round
-        self.bettingPhase()
+        self.betting_phase()
 
         #flop, turn, river: community deal and betting phase
         i = 0
-        while (i < 3 and self.currPlayers > 1):
-            self.communityDeal()
-            self.printGame()
-            self.bettingPhase()
+        while (i < 3 and self.curr_players > 1):
+            self.community_deal()
+            self.print_game()
+            self.betting_phase()
             i += 1
             
-    def bettingPhase(self):
+    def betting_phase(self):
         print("\nPOT IS: ", self.pot)
 
         for player in self.players:
             #give options for players in game, if > 1 player in game
-            while (player.inHand and self.currPlayers > 1):
+            while (player.in_hand and self.curr_players > 1):
                 print("PLAYER", player.name, "CHIPS:", player.chips)
 
                 #still need to add logic on when you can do certain things
-                if (self.currBet == 0):
+                if (self.curr_bet == 0):
                     choice = input("check (c), bet (b), fold (f):\n")
                 else:
                     choice = input("call (ca), raise (r), fold (f):\n")
-                
+
                 if choice == "c":
                     break
                 elif choice == "b":
-                    if (self.placeBet(player)):
+                    if (self.place_bet(player)):
                         break
                 elif choice == "ca":
-                    if (self.callBet(player)):
+                    if (self.call_bet(player)):
                         break
                 elif choice == "r":
-                    if (self.raiseBet(player)):
+                    if (self.raise_bet(player)):
                         break
                 elif choice == "f":
                     if (self.fold(player)):
                         break
-                
-        self.currBet = 0  #reset currBet for the next round
+
+        self.curr_bet = 0  #reset curr_bet for the next round
         
-    def blindPhase(self):
+    def blind_phase(self):
         self.pot += self.blind
-        self.players[len(self.players) -1].chips -= self.blind
-        print("Big Blind", self.players[len(self.players) -1].name, "bet in", self.blind)
+        self.players[len(self.players)-1].chips -= self.blind
+        print("Big Blind", self.players[len(self.players)-1].name, "bet in", self.blind)
         self.pot += self.blind//2
         self.players[len(self.players) -2].chips -= self.blind//2
-        print("Little Blind", self.players[len(self.players) -2].name, "bet in", self.blind//2)
+        print("Little Blind", self.players[len(self.players)-2].name, "bet in", self.blind//2)
 
-    def placeBet(self, player):
+    def place_bet(self, player):
         bet = int(input("How much would you like to bet: "))
-        if (bet <= player.chips and bet > self.currBet):
+        if (bet <= player.chips and bet > self.curr_bet):
             print("Placed bet of " + str(bet))
             player.chips -= bet
             self.pot += bet
-            self.currBet = bet
+            self.curr_bet = bet
             return True
         else:
             if (bet > player.chips):
                 print("Not enough chips!")
             return False
 
-    def raiseBet(self, player):        
-        print("The current bet is: {0}\n".format(self.currBet))
-        raiseAmount = int(input("How much would you like to raise: "))
-        total = self.currBet + raiseAmount
+    def raise_bet(self, player):        
+        print("The current bet is: {0}\n".format(self.curr_bet))
+        raise_amount = int(input("How much would you like to raise: "))
+        total = self.curr_bet + raise_amount
         
-        if (raiseAmount <= player.chips):
+        if (raise_amount <= player.chips):
             print("Raised bet to " + str(total))
             player.chips -= total
             self.pot += total
-            self.currBet = total
+            self.curr_bet = total
             return True
 
         else:
@@ -118,34 +119,38 @@ class Hand:
                 print("Not enough chips!\n")
             return False
         
-    def callBet(self, player):
-        if (self.currBet <= player.chips):
-            print("Called a bet of " + str(self.currBet))
-            player.chips -= self.currBet
-            self.pot += self.currBet
+    def call_bet(self, player):
+        if (self.curr_bet <= player.chips):
+            print("Called a bet of " + str(self.curr_bet))
+            player.chips -= self.curr_bet
+            self.pot += self.curr_bet
             return True
         else:
             print("Not enough chips!\n")
             return False
         
     def fold(self, player):
-        player.inHand = False
-        self.currPlayers -= 1
+        player.in_hand = False
+        self.curr_players -= 1
         return True
     
-    def communityDeal(self):
+    def community_deal(self):
         if (len(self.comm) == 0):
             for i in range(3):
-                self.comm.append(self.deck.dealOne())
+                self.comm.append(self.deck.deal_one())
         elif (len(self.comm) <= 5):
-            self.comm.append(self.deck.dealOne())
+            self.comm.append(self.deck.deal_one())
         else:
             raise RuntimeError("Community cards overflow")
     
     #debugging tool
-    def printGame(self):
+    def print_game(self):
         print("\nCOMMUNITY CARDS:\n" + "; ".join(self.comm))
         print("\nPLAYERS:")
         for x in self.players:
-            print(x)
-            print(x.showHand())
+            if (x.in_hand == True):
+                print(x)
+                print(x.show_hand())
+            else:
+                print(x)
+                print("Folded")
