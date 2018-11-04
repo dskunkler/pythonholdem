@@ -1,5 +1,6 @@
 import hand, player
 
+
 class Game:
     #contructor requires list of names and buyin amount
     def __init__(self, names, buyin):
@@ -16,10 +17,15 @@ class Game:
             self.handNumber += 1
             h.play()
             h.clear()
+            #rotates betting and blind order
+            h.players = h.players[1:] + h.players[:1]
 
             
 names = ["A","B","C"]
 
-g = Game(names, 200)
+g = Game(names, 2000)
+
 
 g.play()
+
+    
