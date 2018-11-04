@@ -7,6 +7,8 @@ class Hand:
         self.deck = deck.Deck()
         self.comm = [] #community cards
 
+        self.blind = 50 #holds blinds
+
         self.pot = 0
         self.currBet = 0
 
@@ -19,6 +21,8 @@ class Hand:
         
     def play(self):
         self.deck.shuffleDeck()
+
+        self.blindPhase() #Posts blinds             
 
         #deal to players
         for x in self.players:
@@ -62,6 +66,14 @@ class Hand:
                     break
         
         self.currBet = 0  #reset currBet for the next round
+
+    def blindPhase(self):
+        self.pot += self.blind
+        self.players[len(self.players) -1].chips -= self.blind
+        print("Big Blind", self.players[len(self.players) -1].name, "bet in", self.blind)
+        self.pot += self.blind//2
+        self.players[len(self.players) -2].chips -= self.blind//2
+        print("Little Blind", self.players[len(self.players) -2].name, "bet in", self.blind//2)
                     
     def placeBet(self, player):
         bet = int(input("How much would you like to bet: "))
