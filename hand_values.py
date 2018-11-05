@@ -14,13 +14,41 @@ def get_winner(player_list, comm_cards):
     []
 
 # Determines player's hand values
-def hand_value(hand):
+def hand_value(all_cards):
     return []
+
+#Makes longest list possible of equal ranks
+#if length of list is equal to kind, we return the card
+#return False otherwise
+def of_a_kind(all_cards, kind):
+    ranks = [card.rank for card in all_cards] #list of all ranks
+    best = [] #this will be the longest list of equal ranks
+    x = 0
+    for i in ranks:
+        x += 1 # iterator for splicing rank for j
+        temp = []
+        temp.append(i) #creates a temporary list with i in it
+        for j in ranks[x:]: #compares rest of list past i
+            if i == j:
+                temp.append(j) # if rank is equal to our list val we add it
+        if len(temp) > len(best): # if our temp is longest its our best
+            best = temp
+        elif len(temp) == len(best):
+            if temp[0] > best[0]:
+                best = temp
+        
+                
+    if len(best) == kind: #checking if its equal to what we want
+        return best[0] #returns rank of our best type
+    else:
+        return False
+                 
+
 
 # Returns high card rank if straight exists
 # Returns -1 if no straight exists
-def straight(hand):
-    ranks = [card.rank for card in hand] # List of only ranks
+def straight(all_cards):
+    ranks = [card.rank for card in all_cards] # List of only ranks
     ranks = list(set(ranks)) # Creates unique list of ranks
     ranks.sort(reverse=True) # Sorts in descending order
 
@@ -35,8 +63,8 @@ def straight(hand):
         
     return -1
 
-def flush(hand):
-    suits = [card.suit for card in hand] # List of only suits
+def flush(all_cards):
+    suits = [card.suit for card in all_cards] # List of only suits
     suits.sort()
     suit_len = 1
     for i in range(1, len(suits)):
@@ -71,6 +99,31 @@ print(combined)
 print(combined[0].rank)
 combined.sort(key=lambda card: card.rank, reverse=True)
 print(combined)
+
+print("\n4 OF A KIND TEST---------------------------")
+test_3 = [Card(3,0),Card(8,0),Card(7,0),Card(8,0),
+          Card(8,3),Card(7,3),Card(8,0)]
+print(test_3)
+print(of_a_kind(test_3,4))
+
+print("\n3 OF A KIND TEST---------------------------")
+
+test_4 = [Card(3,0),Card(0,0),Card(7,0),Card(8,0),
+          Card(8,3),Card(7,3),Card(8,0)]
+print(test_3)
+print(of_a_kind(test_3,3))
+print(test_4)
+print(of_a_kind(test_4,3))
+
+print("\n2 OF A KIND TEST---------------------------")
+
+test_5 = [Card(3,0),Card(0,0),Card(7,0),Card(10,0),
+          Card(8,3),Card(7,3),Card(8,0)]
+print(test_4)
+print(of_a_kind(test_4,2))
+print(test_5)
+print(of_a_kind(test_5,2))
+
 
 print("\nFLUSH TESTS--------------------------------")
 test_1 = [Card(0,0),Card(0,1),Card(4,0),Card(10,0),
