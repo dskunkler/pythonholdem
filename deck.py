@@ -2,7 +2,7 @@ from random import shuffle
 
 class Card:
     ranks = ['2','3','4','5','6','7','8','9','10','Jack','Queen','King','Ace']
-    suits = ['Spades','Hearts','Clubs','Diamonds']
+    suits = ['Spades','Hearts','Diamonds','Clubs']
     
     def __init__(self, rank, suit):
         self.rank = rank
@@ -10,7 +10,7 @@ class Card:
     
     def __repr__(self):
         return '{} {}'.format(Card.ranks[self.rank], Card.suits[self.suit])
-
+    
 class Deck:
     def __init__(self):
         self.deck = []
