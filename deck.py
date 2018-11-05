@@ -25,13 +25,7 @@ class Deck:
     def deal_one(self):
         card = self.deck.pop()
         return card
-    
-    def show_deck(self):
-        deck_str = ''
-        for i in range(0, 49, 4):
-            print('{} {} {} {}'.format(self.deck[i], self.deck[i+1],
-                                         self.deck[i+2], self.deck[i+3]))
-        
+            
     def shuffle_deck(self):
         shuffle(self.deck)
 
