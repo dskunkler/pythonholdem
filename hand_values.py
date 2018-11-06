@@ -1,4 +1,3 @@
-
 # 1 Straight flush
 # 2 Four of a kind
 # 3 Full house
@@ -8,6 +7,29 @@
 # 7 Two pair
 # 8 Pair
 # 9 High card
+
+#Royal flush will return true if there is a straight flush with ace high
+def royal_flush(all_cards):
+    x = 0
+    flushl = [] #this is the list of all same suits
+    for i in all_cards:
+        x += 1 # iterator for splicing rank for j
+        temp = []
+        temp.append(i) #creates a temporary list with i in it
+        for j in all_cards[x:]: #compares rest of list past i
+            if i.suit == j.suit:
+                temp.append(j)# if suit is equal to our first val we add it
+        if len(temp) > len(flushl) and len(temp) >= 5: #temp must be greater
+            flushl = temp                              #then flush list & 5     
+    flushl.sort(key=lambda card: card.rank, reverse = True) #orders by rank
+    royal_f = False     
+    if flushl[0].rank == 12:    #first in list must be an Ace
+        royal_f = True          #will be false if first isnt Ace
+        for i in range(5):
+            if flushl[i].rank != 12 - i:
+                royal_f = False #if it doesn't descend incrementally its False
+    return royal_f
+
 
 # Using player hands and community cards, determines winner
 def get_winner(player_list, comm_cards):
@@ -99,6 +121,18 @@ print(combined)
 print(combined[0].rank)
 combined.sort(key=lambda card: card.rank, reverse=True)
 print(combined)
+
+print("\nROYAL FLUSH TEST-------------------------------")
+test_1 = [Card(12,3),Card(11,0),Card(9,0),Card(10,0),
+          Card(3,0),Card(12,0),Card(8,0)]
+print(test_1)
+print(royal_flush(test_1))
+
+print("\nROYAL FLUSH TEST-------------------------------")
+test_2 = [Card(12,3),Card(11,0),Card(9,0),Card(10,0),
+          Card(3,0),Card(12,0),Card(7,0)]
+print(test_2)
+print(royal_flush(test_2))
 
 print("\n4 OF A KIND TEST---------------------------")
 test_3 = [Card(3,0),Card(8,0),Card(7,0),Card(8,0),
