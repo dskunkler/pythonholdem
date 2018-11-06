@@ -2,7 +2,7 @@ from random import shuffle
 
 class Card:
     ranks = ['2','3','4','5','6','7','8','9','10','Jack','Queen','King','Ace']
-    suits = ['Spades','Hearts','Clubs','Diamonds']
+    suits = ['Spades','Hearts','Diamonds','Clubs']
     
     def __init__(self, rank, suit):
         self.rank = rank
@@ -10,7 +10,7 @@ class Card:
     
     def __repr__(self):
         return '{} {}'.format(Card.ranks[self.rank], Card.suits[self.suit])
-
+    
 class Deck:
     def __init__(self):
         self.deck = []
@@ -25,13 +25,7 @@ class Deck:
     def deal_one(self):
         card = self.deck.pop()
         return card
-    
-    def show_deck(self):
-        deck_str = ''
-        for i in range(0, 49, 4):
-            print('{} {} {} {}'.format(self.deck[i], self.deck[i+1],
-                                         self.deck[i+2], self.deck[i+3]))
-        
+            
     def shuffle_deck(self):
         shuffle(self.deck)
 
