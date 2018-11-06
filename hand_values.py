@@ -11,8 +11,6 @@
 
 #Royal flush will return true if there is a straight flush with ace high
 def royal_flush(all_cards):
-    ranks = all_cards
-    ranks.sort(key=lambda card: card.rank, reverse=True)
     x = 0
     flushl = [] #this is the list of all same suits
     for i in all_cards:
