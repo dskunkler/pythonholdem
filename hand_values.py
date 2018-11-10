@@ -9,7 +9,37 @@
 # 8 Pair
 # 9 High card
 
+#Tests for a royal flush Returns high cards if it is or -1 if not
+def straight_flush(all_cards):
+    x = 0
+    flushl = [] #this is the list of all same suits
+    for i in all_cards:
+        x += 1 # iterator for splicing rank for j
+        temp = []
+        temp.append(i) #creates a temporary list with i in it
+        for j in all_cards[x:]: #compares rest of list past i
+            if i.suit == j.suit:
+                temp.append(j)# if suit is equal to our first val we add it
+        if len(temp) > len(flushl) and len(temp) >= 5: #temp must be greater
+            flushl = temp                              #then flush list & 5     
+    flushl.sort(key=lambda card: card.rank, reverse = True) #orders by rank
+    straight_f = False     
+    for i in range(len(flushl)-4):
+        # Spliced list of 5
+        sub_seq = flushl[i:i+5]
+        for j in range(1,5):
+            if sub_seq[0].rank -j == sub_seq[j].rank:
+                if j == 4:# will be true if we've gotten to the 4th element
+                    straight_f = True
+            else:# otherwise we don't keep iterating
+                break
+        if straight_f == True:
+            return sub_seq[0].rank
+        else:
+            return -1
+
 #Royal flush will return true if there is a straight flush with ace high
+'''
 def royal_flush(all_cards):
     x = 0
     flushl = [] #this is the list of all same suits
@@ -30,7 +60,7 @@ def royal_flush(all_cards):
             if flushl[i].rank != 12 - i:
                 royal_f = False #if it doesn't descend incrementally its False
     return royal_f
-
+'''
 
 # Using player hands and community cards, determines winner
 def get_winner(player_list, comm_cards):
@@ -123,15 +153,15 @@ print(combined[0].rank)
 combined.sort(key=lambda card: card.rank, reverse=True)
 print(combined)
 
-print("\nROYAL FLUSH TEST-------------------------------")
+print("\nSTRAIGHT FLUSH TEST-------------------------------")
 test_1 = [Card(12,3),Card(11,0),Card(9,0),Card(10,0),
-          Card(3,0),Card(12,0),Card(8,0)]
+          Card(3,0),Card(7,0),Card(8,0)]
 print(test_1)
 print(royal_flush(test_1))
 
-print("\nROYAL FLUSH TEST-------------------------------")
+print("\nROYAL TEST-------------------------------")
 test_2 = [Card(12,3),Card(11,0),Card(9,0),Card(10,0),
-          Card(3,0),Card(12,0),Card(7,0)]
+          Card(3,0),Card(12,0),Card(8,0)]
 print(test_2)
 print(royal_flush(test_2))
 
