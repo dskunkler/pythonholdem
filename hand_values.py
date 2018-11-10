@@ -38,6 +38,53 @@ def straight_flush(all_cards):
         else:
             return -1
 
+#Full house function        
+def full_house(all_cards):
+    ranks = [card.rank for card in all_cards] #list of all ranks
+    three_of = [] 
+    two_of = [] 
+    x = 0
+    three = False
+    two = False
+    for i in ranks:
+        x += 1 # iterator for splicing rank for j
+        temp = []
+        temp.append(i) #creates a temporary list with i in it
+        for j in ranks[x:]: #compares rest of list past i
+            if i == j:
+                temp.append(j)# if rank is equal to our list val we add it
+        if len(temp) == 3:# if our temp = 3
+            if len(three_of) == 3:
+                if temp[0] > three_of[0]:
+                    three_of = temp
+                    three = True
+            else:
+                three_of = temp
+                three = True
+    for i in range(3): #I have to remove them or it will create a list of two from the 3 of a kind
+        ranks.remove(three_of[0])
+    x = 0 #We now repeat the process for the pair
+    for i in ranks:
+        x += 1 # iterator for splicing rank for j
+        temp = []
+        temp.append(i) #creates a temporary list with i in it
+        for j in ranks[x:]: #compares rest of list past i
+            if i == j:
+                temp.append(j)# if rank is equal to our list val we add it
+        if len(temp) == 2:
+            if len(two_of) == 2:
+                if temp[0] > two_of[0]:
+                    two_of = temp
+                    two = True
+            else:
+                two_of = temp
+                two = True
+            
+    if two == True and three == True:
+        return three_of[0]
+    else:
+        return -1
+
 #Royal flush will return true if there is a straight flush with ace high
 '''
 def royal_flush(all_cards):
@@ -157,13 +204,13 @@ print("\nSTRAIGHT FLUSH TEST-------------------------------")
 test_1 = [Card(12,3),Card(11,0),Card(9,0),Card(10,0),
           Card(3,0),Card(7,0),Card(8,0)]
 print(test_1)
-print(royal_flush(test_1))
+print(straight_flush(test_1))
 
 print("\nROYAL TEST-------------------------------")
 test_2 = [Card(12,3),Card(11,0),Card(9,0),Card(10,0),
           Card(3,0),Card(12,0),Card(8,0)]
 print(test_2)
-print(royal_flush(test_2))
+print(straight_flush(test_2))
 
 print("\n4 OF A KIND TEST---------------------------")
 test_3 = [Card(3,0),Card(8,0),Card(7,0),Card(8,0),
@@ -182,8 +229,8 @@ print(of_a_kind(test_4,3))
 
 print("\n2 OF A KIND TEST---------------------------")
 
-test_5 = [Card(3,0),Card(0,0),Card(7,0),Card(10,0),
-          Card(8,3),Card(7,3),Card(8,0)]
+test_5 = [Card(3,0),Card(8,0),Card(7,0),Card(10,0),
+          Card(8,3),Card(5,3),Card(8,0)]
 print(test_4)
 print(of_a_kind(test_4,2))
 print(test_5)
@@ -205,3 +252,9 @@ test_3 = [Card(0,0),Card(1,1),Card(2,0),Card(3,0),
           Card(5,3),Card(4,3),Card(10,0)]
 print(test_3)
 print(straight(test_3))
+
+print("\nFULL HOUSE TEST-------------------------------")
+test_5 = [Card(9,0),Card(8,0),Card(9,0),Card(4,0),
+          Card(8,3),Card(7,3),Card(8,2)]
+print(test_5)
+print(full_house(test_5))
