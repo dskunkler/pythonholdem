@@ -24,7 +24,9 @@ class Hand:
 
         for player in self.players:
             player.in_hand = True
+            player.in_pot = 0
             player.hand = []
+
         
     def play(self):
         self.deck.shuffle_deck()
@@ -55,11 +57,25 @@ class Hand:
 
         i = 0
         stop = self.curr_players
+        total_players = self.curr_players
         
         while (i < stop):
-            #give options for players in game, if > 1 player in game
+            # Modulus necessary for continous loop through players
+            # if there are multiple raises
+            j = i % total_players # Index of player
+            player = self.players[j]
+
+            print("==================================================")
+            print("i: ", i)
+            print("stop: ", stop)
+            print("j: ", j)
+            print(player)
+            print(player.in_pot)
+            print("==================================================")
+
+            # Give options for players in game, if > 1 player in game
             while (player.in_hand and self.curr_players > 1):
-                print("PLAYER", player.name, "CHIPS:", player.chips)
+                print("\nPLAYER", player.name, "CHIPS:", player.chips)
 
                 if self.curr_bet == 0:
                     choice = input("check (c), bet (b), fold (f):\n")
@@ -67,27 +83,35 @@ class Hand:
                     choice = input("call (ca), raise (r), fold (f):\n")
 
                 if choice == "c":
-                    i += 1
                     break
                 elif choice == "b":
                     if (self.place_bet(player)):
-                        i += 1
+                        # Set loop to rotate through all other players again
+                        # If there are no other raises, loop will end at
+                        # player who bet/raised - 1
+                        stop = i + total_players
+                        print("new stop" + str(stop))
                         break
                 elif choice == "ca":
                     if (self.call_bet(player)):
-                        i += 1
                         break
                 elif choice == "r":
                     if (self.raise_bet(player)):
                         # Set loop to rotate through all other players again
-                        stop = i + self.curr_players - 2
+                        stop = i + total_players
+                        print("new stop" + str(stop))
                         break
                 elif choice == "f":
                     if (self.fold(player)):
-                        i += 1
                         break
-
-        self.curr_bet = 0  # Reset curr_bet for the next round
+            i += 1 # Increment outer while loop counter
+        # End while
+        # Reset curr_bet for the next round
+        self.curr_bet = 0
+        # Reset player in_pots to 0 for next round
+        for player in self.players:
+            player.in_pot = 0
+        
         
     def blind_phase(self):
         self.pot += self.blind
@@ -97,11 +121,13 @@ class Hand:
         self.players[len(self.players) -2].chips -= self.blind//2
         print("Little Blind", self.players[len(self.players)-2].name, "bet in", self.blind//2)
 
+    # Original bet placed
     def place_bet(self, player):
         bet = int(input("How much would you like to bet: "))
         if (bet <= player.chips and bet > self.curr_bet):
             print("Placed bet of " + str(bet))
             player.chips -= bet
+            player.in_pot += bet
             self.pot += bet
             self.curr_bet = bet
             return True
@@ -110,31 +136,35 @@ class Hand:
                 print("Not enough chips!")
             return False
 
+    # Raises and re-raises
     def raise_bet(self, player):        
-        print("The current bet is: {0}\n".format(self.curr_bet))
+        print("The current bet is: {}\n".format(self.curr_bet))
         raise_amount = int(input("How much would you like to raise: "))
         total = self.curr_bet + raise_amount
+        chips_needed = total - player.in_pot
         
         if (raise_amount <= player.chips):
-            print("Raised bet to " + str(total))
-            player.chips -= total
-            self.pot += total
+            print("\nRaised bet to ", total)
+            player.chips -= chips_needed
+            player.in_pot += chips_needed
+            self.pot += chips_needed
             self.curr_bet = total
             return True
 
         else:
             if (total > player.chips):
-                print("Not enough chips!\n")
+                print("\nNot enough chips!\n")
             return False
         
     def call_bet(self, player):
+        chips_needed = self.curr_bet - player.in_pot
         if (self.curr_bet <= player.chips):
-            print("Called a bet of " + str(self.curr_bet))
-            player.chips -= self.curr_bet
-            self.pot += self.curr_bet
+            print("\nCalled a bet using {} chips.".format(chips_needed))
+            player.chips -= chips_needed
+            self.pot += chips_needed
             return True
         else:
-            print("Not enough chips!\n")
+            print("\nNot enough chips!\n")
             return False
         
     def fold(self, player):
@@ -153,6 +183,8 @@ class Hand:
     
     #debugging tool primarily
     def print_game(self):
+        print("\n==================================================")
+        print("==================================================")
         print("\nCOMMUNITY CARDS:")
         print(self.comm)
         print("\nPLAYERS:")
@@ -163,3 +195,4 @@ class Hand:
             else:
                 print(x)
                 print("Folded")
+        print("\n==================================================\n")
