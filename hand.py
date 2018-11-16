@@ -6,7 +6,7 @@ class Hand:
     def __init__(self,players):
         self.players = players             # List of players
         self.curr_players = len(players)   # Players in current hand
-        self.deck = deck.Deck()   
+        self.deck = deck.Deck()
         self.comm = []                     # Community cards
 
         self.blind = 50 #holds blinds
@@ -53,33 +53,41 @@ class Hand:
     def betting_phase(self):
         print("\nPOT IS: ", self.pot)
 
-        for player in self.players:
+        i = 0
+        stop = self.curr_players
+        
+        while (i < stop):
             #give options for players in game, if > 1 player in game
             while (player.in_hand and self.curr_players > 1):
                 print("PLAYER", player.name, "CHIPS:", player.chips)
 
-                #still need to add logic on when you can do certain things
-                if (self.curr_bet == 0):
+                if self.curr_bet == 0:
                     choice = input("check (c), bet (b), fold (f):\n")
                 else:
                     choice = input("call (ca), raise (r), fold (f):\n")
 
                 if choice == "c":
+                    i += 1
                     break
                 elif choice == "b":
                     if (self.place_bet(player)):
+                        i += 1
                         break
                 elif choice == "ca":
                     if (self.call_bet(player)):
+                        i += 1
                         break
                 elif choice == "r":
                     if (self.raise_bet(player)):
+                        # Set loop to rotate through all other players again
+                        stop = i + self.curr_players - 2
                         break
                 elif choice == "f":
                     if (self.fold(player)):
+                        i += 1
                         break
 
-        self.curr_bet = 0  #reset curr_bet for the next round
+        self.curr_bet = 0  # Reset curr_bet for the next round
         
     def blind_phase(self):
         self.pot += self.blind
@@ -135,15 +143,15 @@ class Hand:
         return True
     
     def community_deal(self):
-        if (len(self.comm) == 0):
+        if len(self.comm) == 0:
             for i in range(3):
                 self.comm.append(self.deck.deal_one())
-        elif (len(self.comm) <= 5):
+        elif len(self.comm) <= 5:
             self.comm.append(self.deck.deal_one())
         else:
             raise RuntimeError("Community cards overflow")
     
-    #debugging tool
+    #debugging tool primarily
     def print_game(self):
         print("\nCOMMUNITY CARDS:")
         print(self.comm)
