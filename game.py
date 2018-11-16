@@ -13,7 +13,9 @@ class Game:
     def play(self):
         h = hand.Hand(self.players)
         while (True):
-            print("\n----------\nPlaying hand: " + str(self.hand_number))
+            print("\n++++++++++++++++++++++++++++++++++++++++++++++++++")
+            print("Playing hand: " + str(self.hand_number))
+            print("++++++++++++++++++++++++++++++++++++++++++++++++++\n")
             self.hand_number += 1
             h.play()
             h.clear()

@@ -65,14 +65,6 @@ class Hand:
             j = i % total_players # Index of player
             player = self.players[j]
 
-            print("==================================================")
-            print("i: ", i)
-            print("stop: ", stop)
-            print("j: ", j)
-            print(player)
-            print(player.in_pot)
-            print("==================================================")
-
             # Give options for players in game, if > 1 player in game
             while (player.in_hand and self.curr_players > 1):
                 print("\nPLAYER", player.name, "CHIPS:", player.chips)
@@ -90,7 +82,6 @@ class Hand:
                         # If there are no other raises, loop will end at
                         # player who bet/raised - 1
                         stop = i + total_players
-                        print("new stop" + str(stop))
                         break
                 elif choice == "ca":
                     if (self.call_bet(player)):
@@ -99,7 +90,6 @@ class Hand:
                     if (self.raise_bet(player)):
                         # Set loop to rotate through all other players again
                         stop = i + total_players
-                        print("new stop" + str(stop))
                         break
                 elif choice == "f":
                     if (self.fold(player)):
@@ -125,7 +115,7 @@ class Hand:
     def place_bet(self, player):
         bet = int(input("How much would you like to bet: "))
         if (bet <= player.chips and bet > self.curr_bet):
-            print("Placed bet of " + str(bet))
+            print("\nPlaced bet of " + str(bet))
             player.chips -= bet
             player.in_pot += bet
             self.pot += bet
@@ -184,7 +174,6 @@ class Hand:
     #debugging tool primarily
     def print_game(self):
         print("\n==================================================")
-        print("==================================================")
         print("\nCOMMUNITY CARDS:")
         print(self.comm)
         print("\nPLAYERS:")
