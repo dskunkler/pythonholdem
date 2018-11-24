@@ -29,15 +29,8 @@ class Hand:
 
         
     def play(self):
-        self.deck.shuffle_deck()
-
-        self.blind_phase() #Posts blinds             
-
-        #deal to players
-        for player in self.players:
-            for i in range(2):
-                player.get_hand(self.deck.deal_one())
-
+        self.init()
+        
         #pre-flop hands
         self.print_game()
         
@@ -51,7 +44,17 @@ class Hand:
             self.print_game()
             self.betting_phase()
             i += 1
-            
+
+    def init(self):
+        self.deck.shuffle_deck()
+        self.blind_phase() #Posts blinds             
+
+        #deal to players
+        for player in self.players:
+            for i in range(2):
+                player.get_hand(self.deck.deal_one())
+
+        
     def betting_phase(self):
         print("\nPOT IS: ", self.pot)
 
