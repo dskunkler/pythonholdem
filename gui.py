@@ -2,6 +2,45 @@ import pygame, sys
 import hand, player
 from pygame.locals import *
 
+def first_deal_animation(h, screen, players):
+    '''Animation for dealing at the beginning of a new hand'''
+    h.init()
+            
+    hand1 = players[0].hand
+    card1 = hand1[0]
+    card2 = hand1[1]     
+            
+    screen.blit(BACK, (575,100))
+    dealleft = 575
+    dealtop = 100
+    while(dealtop != 400):
+        screen.fill(GREEN)
+        screen.blit(BACK, (575,100))
+        dealtop += 4
+        dealleft -= 1
+        screen.blit(BACK,(dealleft,dealtop))
+        pygame.display.update()
+        CLOCK.tick(FPS)
+        
+    dealleft = 575
+    dealtop = 100
+            
+    while(dealtop != 400):
+        screen.fill(GREEN)
+        screen.blit(BACK, (575,100))
+        screen.blit(CARDS[card1.suit][card1.rank], (500,400))
+        dealtop += 4
+        dealleft += 1
+        screen.blit(BACK,(dealleft,dealtop))
+        pygame.display.update()
+        CLOCK.tick(FPS)
+            
+            
+    screen.blit(CARDS[card2.suit][card2.rank], (650,400))
+            
+            #if (h.comm):
+    h.clear()
+
 # Setting some constants
 FPS = 30
 SCREEN_WIDTH = 1400
@@ -14,24 +53,24 @@ GREEN = ( 40,140, 70)
 WHITE = (255,255,255)
 BLACK = (  0,  0,  0)
 
-clock = pygame.time.Clock()
+CLOCK = pygame.time.Clock()
 
 # Initialize 2D array
 # Access cards with cards[suit][rank]
 # Suit 0-3 | Rank 0-12
-cards = [[],[],[],[]]
-suits = ['S','D','H','C']
+CARDS = [[],[],[],[]]
+SUITS = ['S','D','H','C']
 
 # Fill 2D array
-for i, suit in enumerate(cards):
+for i, suit in enumerate(CARDS):
     for rank in range(2, 15):
-        img = pygame.image.load('images/cards/{}{}.png'.format(rank, suits[i]))
+        img = pygame.image.load('images/cards/{}{}.png'.format(rank, SUITS[i]))
         img = pygame.transform.scale(img, (CARD_WIDTH, CARD_HEIGHT))
         suit.append(img)
 
 # Loads card back
-back = pygame.image.load('images/red_back.png')
-back = pygame.transform.scale(back, (CARD_WIDTH, CARD_HEIGHT))
+BACK = pygame.image.load('images/back1.png')
+BACK = pygame.transform.scale(BACK, (CARD_WIDTH, CARD_HEIGHT))
 
 
 def main():
@@ -76,19 +115,11 @@ def main():
 
         # make this a function instead later...
         if mouse_clicked:
-            h.init()
-            
-            hand1 = players[0].hand
-            card1 = hand1[0]
-            card2 = hand1[1]
-            screen.blit(cards[card1.suit][card1.rank], (500,400))
-            screen.blit(cards[card2.suit][card2.rank], (650,400))
-            #if (h.comm):
-            h.clear()
+            first_deal_animation(h, screen, players)
             
         pygame.display.update()
         
-        clock.tick(FPS)
+        CLOCK.tick(FPS)
         
 # Start program
 main()
